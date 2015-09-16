@@ -1,0 +1,14 @@
+{
+  "name": "aumberg_test_ambit",
+  "version": "0.0.1",
+  "author": "Alexander Umberg",
+  "dependencies": {
+    "selenium-webdriver": "*"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec test/"
+  }
+}
