@@ -1,5 +1,3 @@
-var extend = require('util')._extend;
-var webdriver = require('selenium-webdriver');
 var options = {
     "hub": undefined // "http://127.0.0.1:4444/wd/hub",  "http://ondemand.saucelabs.com:80/wd/hub"
     ,"desiredCapabilities": {
@@ -12,8 +10,15 @@ var options = {
 };
 
 module.exports = function(testName, func) {
-    By = require('selenium-webdriver').By,
-    until = require('selenium-webdriver').until;
+    webdriver = require('selenium-webdriver');
+    until = webdriver.until;
+    By = webdriver.By;
+
+    webdriver.promise.controlFlow().on('uncaughtException', function(e) {
+        driver.quit();
+
+        throw Error(e);
+    });
 
     describe('----------------TEST----------------', function(){
         this.timeout(999999);
@@ -23,7 +28,7 @@ module.exports = function(testName, func) {
                 if ("--options=" === process.argv[i].slice(0, 10)) {
                     try {
                         var jsonarg = JSON.parse(process.argv[i].slice(10).replace(/\'/g, "\""));
-                        options = extend(options, jsonarg);
+                        options = require('util')._extend(options, jsonarg);
                     }
                     catch (e) {
                         console.log("not valid JSON in argument", process.argv[i].slice(10), e);
@@ -39,6 +44,13 @@ module.exports = function(testName, func) {
                 .build();
 
             driver.options = options;
+            driver.screen = function(filePath) {
+                driver.sleep(1000);
+                driver.takeScreenshot().then(function(pngString) {
+                    require('fs').writeFile((filePath || (new Date()).getTime() + ".png"), new Buffer(pngString, 'base64'));
+                })
+                driver.sleep(1000);
+            }   
 
             // driver.findElement_old = driver.findElement;
             // driver.findElement = function(locator) {
