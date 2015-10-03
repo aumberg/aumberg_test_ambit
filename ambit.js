@@ -3,6 +3,7 @@ var options = {
     ,"desiredCapabilities": {
         "browserName": "firefox" // "Chrome"
         ,"platform": undefined //'Windows 10',
+        ,"version": undefined
         ,"name": undefined //'Sample selenium-webdriver test',
         ,"username": undefined
         ,"accessKey": undefined
@@ -21,7 +22,7 @@ module.exports = function(testName, func) {
     });
 
     describe('----------------TEST----------------', function(){
-        this.timeout(999999);
+        this.timeout(999999999);
 
         beforeEach(function() {
             for (var i = 0; i < process.argv.length; i++) {
@@ -58,7 +59,7 @@ module.exports = function(testName, func) {
             //   return driver.findElement_old(locator)
             // }
 
-            console.log("\"" + this["currentTest"]["title"] + "\" " + this["currentTest"]["file"]);
+            console.log(this["currentTest"]["file"] + " \"" + this["currentTest"]["title"] + "\"");
         })
 
         it(testName, function(callback) {
