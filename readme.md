@@ -1,23 +1,30 @@
 # aumberg_test_ambit
 
-Wrapper for write client tests with [selenium-webdriver](https://code.google.com/p/selenium/wiki/WebDriverJs) ([API](http://seleniumhq.github.io/selenium/docs/api/javascript/index.html)) and [Mocha](https://github.com/mochajs/mocha)
+Wrapper for write client tests with [selenium-webdriver](https://www.npmjs.com/package/selenium-webdriver) ([API](http://seleniumhq.github.io/selenium/docs/api/javascript/index.html)) and [Mocha](https://github.com/mochajs/mocha)
 
 Steps:
-* Record test actions with [Selenium Builder](http://seleniumbuilder.github.io/se-builder/)
-* Export actions to **selenium-webdriver** script
-* Remove excess, wrap actions with **ambit** function
+* Install [firefox](https://www.mozilla.org/ru/firefox/products/) browser, [nodejs](https://nodejs.org/en/download/)
+* Record test actions with [Selenium Builder](http://seleniumbuilder.github.io/se-builder/) and export actions to **selenium-webdriver** script or write js-test manualy
+* Wrap selenium-webdriver test with **ambit** function
+* Run start-script ./run.sh or ./run.bat
 
-Example:
+Test example:
 ```
+var helpers = require('../helpers/helpers');
+var google_com = require('../pages/google_com');
+
 require('../ambit.js')("example", function() {
-	driver.get("http://www.google.com");
-	driver.wait(until.titleIs('Google'), 30000);
-	driver.findElement(By.name('q')).sendKeys('webdriver');
-	driver.sleep(2000);
-	driver.findElement(By.name('btnG')).click();
-	driver.wait(until.titleContains('webdriver'), 3000);
-	driver.getTitle().then(function(title) {
-	  console.log(title);
-	});
+	helpers.screenSetSize(700,300);
+	google_com.go()
+	google_com.search("selenium")
+	var infoPage = helpers.infoPage()
+	driver.call(function() {console.log(infoPage.title);});
+	var infoElement = helpers.infoElement(google_com.elementFirstLink())
+	driver.call(function() {
+		helpers.writeTestdata("testdata", {"firstLinkText": infoElement.text})
+		console.log(helpers.readTestdata("testdata").firstLinkText);
+	})
+	google_com.goToFirstLink()
+	helpers.screenshot("selenium_site");
 });
 ```

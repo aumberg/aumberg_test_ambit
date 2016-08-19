@@ -1,5 +1,4 @@
 node_modules
-test
 *.log
-*.sh
 *.png
+*.json

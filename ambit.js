@@ -14,12 +14,15 @@ module.exports = function(testName, func) {
     webdriver = require('selenium-webdriver');
     until = webdriver.until;
     By = webdriver.By;
+    driver = undefined;
 
-    webdriver.promise.controlFlow().on('uncaughtException', function(e) {
-        driver.quit();
-
-        throw Error(e);
-    });
+    // webdriver.promise.controlFlow().on('uncaughtException', function(e) {
+    //     driver.quit();
+    //     console.log("theerror");
+    //     console.log(e);
+    //     throw Error(e);
+    //     process.exit(1);
+    // });
 
     describe('----------------TEST----------------', function(){
         this.timeout(999999999);
@@ -45,27 +48,28 @@ module.exports = function(testName, func) {
                 .build();
 
             driver.options = options;
-            driver.screen = function(filePath) {
-                driver.sleep(1000);
-                driver.takeScreenshot().then(function(pngString) {
-                    require('fs').writeFile((filePath || (new Date()).getTime() + ".png"), new Buffer(pngString, 'base64'));
-                })
-                driver.sleep(1000);
-            }   
-
-            // driver.findElement_old = driver.findElement;
-            // driver.findElement = function(locator) {
-            //   driver.sleep(500); // wait page reload etc.
-            //   return driver.findElement_old(locator)
-            // }
+            driver.findElement_old = driver.findElement;
+            driver.findElement = function(locator, timeout) {
+                timeout = timeout || 10000;
+                driver.wait(until.elementLocated(locator), timeout).then(function() {},function() {})
+                driver.wait(until.elementIsVisible(driver.findElement_old(locator).then(function() {},function() {})), timeout).then(function() {},function() {})
+                var e = driver.findElement_old(locator)
+                
+                return e
+            }
 
             console.log(this["currentTest"]["file"] + " \"" + this["currentTest"]["title"] + "\"");
         })
 
         it(testName, function(callback) {
             func();
-            driver.quit();
             driver.call(callback)
         });
+
+
+        after(function(callback) {
+            driver.quit();
+            driver.call(callback)
+        });        
     }) 
 }

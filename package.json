@@ -5,17 +5,19 @@
   "license": "Unlicense",
   "author": {
     "name": "Alexander Umberg",
-    "email": "slovastick@mail.ru",
+    "email": "aumberg@gmail.com",
     "url": "https://github.com/aumberg"
   },
   "dependencies": {
-    "selenium-webdriver": "*"
+    "selenium-webdriver": "*",
+    "rucaptcha": "*",
+    "request": "*"
   },
   "devDependencies": {
     "mocha": "*"
   },
   "scripts": {
-    "test": "mocha --reporter spec test/"
+    "test": "mocha --reporter spec tests/"
   },
   "bugs": {
     "url": "https://github.com/aumberg/aumberg_test_ambit/issues"
