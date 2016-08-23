@@ -1,7 +1,6 @@
 {
   "name": "aumberg_test_ambit",
   "version": "0.0.1",
-  "main": "./ambit.js",
   "license": "Unlicense",
   "author": {
     "name": "Alexander Umberg",
@@ -9,15 +8,16 @@
     "url": "https://github.com/aumberg"
   },
   "dependencies": {
-    "selenium-webdriver": "*",
-    "rucaptcha": "*",
-    "request": "*"
-  },
-  "devDependencies": {
-    "mocha": "*"
+    "chai":"*",
+    "mocha": "*",
+    "phantomjs": "*",
+    "webdriverio": "*",
+    "wdio-spec-reporter": "*",
+    "wdio-mocha-framework": "*"
   },
   "scripts": {
-    "test": "mocha --reporter spec tests/"
+    "test": "./node_modules/.bin/wdio wdio.conf.js",
+    "test:watch": "npm run test -- --watch"
   },
   "bugs": {
     "url": "https://github.com/aumberg/aumberg_test_ambit/issues"
@@ -27,10 +27,8 @@
     "url": "git://github.com/aumberg/aumberg_test_ambit.git"
   },
   "keywords": [
-    "webdriver",
-    "saucelabs",
+    "webdriverio",
     "selenium",
-    "mocha",
     "test"
   ]
 }

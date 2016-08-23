@@ -1,2 +1,0 @@
-node node_modules\mocha\bin\mocha --no-timeouts -C tests --options='{"hub": "http://ondemand.saucelabs.com:80/wd/hub", "desiredCapabilities": {"browserName": "chrome","platform": "Windows 10","version": "45","name": "Sample selenium-webdriver test","username": "","accessKey": ""}}'
-ping localhost
